@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Soumettre une Demande - ISP Muhangi{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Soumettre une Demande d'Emploi</h2>
+    <p class="lead">Complétez le formulaire ci-dessous pour postuler à une opportunité à l'ISP Muhangi.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form id="demandeForm" onsubmit="handleSubmit(event)" enctype="multipart/form-data" action="/demande" method="POST" class="needs-validation" novalidate>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="nom">Nom:</label>
+                    <input type="text" class="form-control" name="nom" required>
+                    <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="prenom">Prénom:</label>
+                    <input type="text" class="form-control" name="prenom" required>
+                    <div class="invalid-feedback">Veuillez entrer votre prénom.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" name="email" required>
+                    <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="telephone">Téléphone:</label>
+                    <input type="tel" class="form-control" name="telephone" required pattern="[0-9]{10}">
+                    <div class="invalid-feedback">Veuillez entrer un numéro de téléphone valide (10 chiffres).</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="disponibilite" value="1">
+                        <label class="form-check-label" for="disponibilite">Disponibilité</label>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="distinction" value="1">
+                        <label class="form-check-label" for="distinction">Distinction</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="moyenne">Moyenne:</label>
+                    <input type="number" step="0.01" class="form-control" name="moyenne" required>
+                    <div class="invalid-feedback">Veuillez entrer votre moyenne.</div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="vacance_id">Poste:</label>
+                    <select class="form-control" name="vacance_id" required>
+                        {% for vacance in vacances %}
+                        <option value="{{ vacance[0] }}">{{ vacance[1] }} - {{ vacance[2] }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">Veuillez sélectionner un poste.</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cv">CV:</label>
+                <input type="file" class="form-control-file" name="cv" required>
+                <div class="invalid-feedback">Veuillez télécharger votre CV.</div>
+            </div>
+            <div class="form-group">
+                <label for="releve_cotes">Relevé de Cotes:</label>
+                <input type="file" class="form-control-file" name="releve_cotes" required>
+                <div class="invalid-feedback">Veuillez télécharger votre relevé de cotes.</div>
+            </div>
+            <input type="hidden" name="probability">
+            <button type="submit" class="btn btn-primary btn-block">Soumettre</button>
+        </form>
+        <p id="probability" class="mt-4"></p>
+    </div>
+</div>
+
+<script>
+    // Validation du formulaire
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+        const form = document.getElementById('demandeForm');
+        const disponibilite = form.querySelector('input[name="disponibilite"]').checked ? 1 : 0;
+        const distinction = form.querySelector('input[name="distinction"]').checked ? 1 : 0;
+        const moyenne = parseFloat(form.querySelector('input[name="moyenne"]').value);
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ disponibilite, distinction, moyenne })
+        });
+        const result = await response.json();
+        const probability = result.probability;
+        document.getElementById('probability').innerText = `Probabilité de recrutement : ${(probability * 100).toFixed(2)}%`;
+        form.querySelector('input[name="probability"]').value = probability;
+        form.submit();
+    }
+</script>
+{% endblock %}

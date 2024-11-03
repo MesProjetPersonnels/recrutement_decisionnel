@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter un utilisateur</title>
+</head>
+<body>
+    <h1>Ajouter un utilisateur</h1>
+    <form method="POST" action="{{ url_for('add_user') }}">
+        <label for="username">Nom d'utilisateur:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Mot de passe:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <label for="role">Rôle:</label>
+        <select id="role" name="role">
+            <option value="admin">Admin</option>
+            <option value="user">Utilisateur</option>
+        </select>
+        <br>
+        <button type="submit">Ajouter</button>
+    </form>
+</body>
+</html>

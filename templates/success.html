@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Candidature Soumise - ISP Muhangi{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Candidature Soumise avec Succès!</h2>
+    <p class="lead">Merci d'avoir postulé à une opportunité à l'ISP Muhangi.</p>
+    <hr class="my-4">
+    <p>Votre candidature a été reçue et nous vous contacterons bientôt.</p>
+    <p class="lead">Probabilité de recrutement : <strong>{{ (probability * 100) | round(2) }}%</strong></p>
+    <a class="btn btn-primary btn-lg" href="/" role="button">Retour à l'accueil</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('vacances') }}" role="button">Voir d'autres postes vacants</a>
+</div>
+{% endblock %}
