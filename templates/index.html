@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil - ISP Muhangi{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Bienvenue à l'Université ISP Muhangi</h1>
+    <p class="lead">Simplifiez votre processus de recrutement et trouvez les meilleurs talents pour notre université.</p>
+    <hr class="my-4">
+    <p>Utilisez notre outil pour parcourir les postes vacants, soumettre vos candidatures, et découvrir les talents en fonction de leurs scores de recrutement prédits par l'intelligence artificielle.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('vacances') }}" role="button">Voir les postes vacants</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('demande') }}" role="button">Soumettre une demande</a>
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        <h2>Postes Vacants</h2>
+        <p>Explorez les opportunités disponibles dans notre université. Nous avons plusieurs postes ouverts dans différents départements.</p>
+        <a class="btn btn-primary" href="{{ url_for('vacances') }}" role="button">Voir les postes vacants</a>
+    </div>
+    <div class="col-lg-4">
+        <h2>Soumettre une Demande</h2>
+        <p>Vous cherchez un emploi ? Soumettez votre candidature facilement via notre formulaire en ligne.</p>
+        <a class="btn btn-secondary" href="{{ url_for('demande') }}" role="button">Soumettre une demande</a>
+    </div>
+    <div class="col-lg-4">
+        <h2>Liste des Candidats</h2>
+        <p>Consultez les profils des candidats avec leurs scores de recrutement prédits. Trouvez le meilleur talent pour votre université.</p>
+        <a class="btn btn-info" href="{{ url_for('candidats') }}" role="button">Voir la liste des candidats</a>
+    </div>
+</div>
+{% endblock %}

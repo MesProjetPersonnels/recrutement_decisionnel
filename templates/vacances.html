@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Postes Vacants - ISP Muhangi{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Opportunités à l'ISP Muhangi</h2>
+    <p class="lead">Rejoignez notre équipe et contribuez à une éducation de qualité.</p>
+</div>
+
+<div class="row">
+    {% for vacance in data %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">{{ vacance[1] }}</h4>
+                <p class="card-text">{{ vacance[2] }}</p>
+                <small class="text-muted">Posté le {{ vacance[3] }}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="text-center mt-4">
+    <a href="{{ url_for('demande') }}" class="btn btn-lg btn-success">Soumettre une demande</a>
+</div>
+{% endblock %}
